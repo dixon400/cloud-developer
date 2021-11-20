@@ -160,25 +160,26 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     return (
       <Grid padded>
         {this.state.todos && this.state.todos.map((todo, pos) => {
+          console.log("Todo from 163",todo)
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={pos}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.onTodoCheck(pos)}
-                  checked={todo.done}
+                  checked={ todo && todo.done}
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
-                {todo.name}
+                { todo && todo.name}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {todo.dueDate}
+                {todo && todo.dueDate}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.todoId)}
+                  onClick={() => this.onEditButtonClick(todo && todo.todoId)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,12 +188,12 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(todo.todoId)}
+                  onClick={() => this.onTodoDelete(todo && todo.todoId)}
                 >
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
+              {todo && todo.attachmentUrl && (
                 <Image src={todo.attachmentUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>

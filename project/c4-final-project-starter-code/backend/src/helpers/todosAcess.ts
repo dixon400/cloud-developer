@@ -116,7 +116,8 @@ export class TodosAccess {
       UpdateExpression: 'set attachmentUrl = :attachmentUrl',
       ExpressionAttributeValues: {
         ':attachmentUrl': attachmentUrl
-      }
+      },
+      ReturnValues: "UPDATED_NEW"
     }).promise()
   }
 }

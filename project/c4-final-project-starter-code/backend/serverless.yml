@@ -153,8 +153,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - s3:PutObject
-          - s3:GetObject
+          - s3:*
         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
       - Effect: Allow
         Action:
@@ -237,6 +236,6 @@ resources:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
               Principal: '*'
-              Action: 's3:GetObject'
+              Action: 's3:*'
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
