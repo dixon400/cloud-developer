@@ -38,13 +38,14 @@ export class TodosAccess {
     return items as TodoItem[]
   }
 
-  async getTodoItem(todoId: string): Promise<TodoItem> {
+  async getTodoItem(userId: string, todoId: string): Promise<TodoItem> {
     logger.info(`Fetching todo ${todoId}`)
 
     const result = await this.docClient
       .get({
         TableName: this.todosTable,
         Key: {
+          userId,
           todoId
         }
       })
@@ -67,6 +68,7 @@ export class TodosAccess {
   }
 
   async updateTodo(
+    userId: string,
     todoId: string,
     todo: TodoUpdate
   ): Promise<TodoUpdate> {
@@ -74,6 +76,7 @@ export class TodosAccess {
       .update({
         TableName: this.todosTable,
         Key: {
+          userId,
           todoId
         },
         UpdateExpression: 'set #name = :name, dueDate = :dueDate, done = :done',
@@ -92,25 +95,27 @@ export class TodosAccess {
     return todo
   }
 
-  async deleteTodoItem(todoId: string) {
+  async deleteTodoItem(userId: string, todoId: string) {
     logger.info(`Deleting todo item ${todoId}`)
 
     await this.docClient
       .delete({
         TableName: this.todosTable,
         Key: {
+          userId,
           todoId
         }
       })
       .promise()
   }
 
-  async updateAttachmentUrl(todoId: string, attachmentUrl: string) {
+  async updateAttachmentUrl(userId: string,todoId: string, attachmentUrl: string) {
     logger.info(`Adding attachment URL for todo ${todoId}`)
 
     await this.docClient.update({
       TableName: this.todosTable,
       Key: {
+        userId,
         todoId
       },
       UpdateExpression: 'set attachmentUrl = :attachmentUrl',

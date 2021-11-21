@@ -56,7 +56,7 @@ export async function updateTodo(
     todoUpdate: updateTodoRequest
   })
 
-  const item = await todosAccess.getTodoItem(todoId)
+  const item = await todosAccess.getTodoItem(userId, todoId)
 
   if (!item) throw new Error('Item not found') 
 
@@ -67,13 +67,13 @@ export async function updateTodo(
     throw new Error('User is not authorized to update item') 
   }
 
-  todosAccess.updateTodo(todoId, updateTodoRequest as TodoUpdate);
+  todosAccess.updateTodo(userId, todoId, updateTodoRequest as TodoUpdate);
 }
 
 export async function deleteTodo(userId: string, todoId: string) {
   logger.info(`Deleting todo ${todoId} for user ${userId}`)
 
-  const item = await todosAccess.getTodoItem(todoId)
+  const item = await todosAccess.getTodoItem(userId, todoId)
 
   if (!item) throw new Error('Item not found')
 
@@ -84,7 +84,7 @@ export async function deleteTodo(userId: string, todoId: string) {
     throw new Error('User is not authorized to delete item') 
   }
 
-  todosAccess.deleteTodoItem(todoId)
+  todosAccess.deleteTodoItem(userId, todoId)
 }
 
 export async function createAttachmentPresignedUrl(attachmentId: string): Promise<string> {
@@ -102,7 +102,7 @@ export async function updateAttachmentUrl(userId: string, todoId: string, attach
 
   logger.info(`Updating todo ${todoId} with attachment URL ${attachmentUrl}`, { userId, todoId })
 
-  const item = await todosAccess.getTodoItem(todoId)
+  const item = await todosAccess.getTodoItem(userId,todoId)
 
   if (!item)
     throw new Error('Item not found') 
@@ -112,5 +112,5 @@ export async function updateAttachmentUrl(userId: string, todoId: string, attach
     throw new Error('User is not authorized to update item') 
   }
 
-  await todosAccess.updateAttachmentUrl(todoId, attachmentUrl)
+  await todosAccess.updateAttachmentUrl(userId, todoId, attachmentUrl)
 }
